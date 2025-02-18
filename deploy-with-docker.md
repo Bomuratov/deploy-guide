@@ -108,3 +108,69 @@ EXPOSE 8000
 # Запуск сервера Django
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi:application"]
 ```
+и выйдем сохранив изменения
+
+* Вернемся в корневую директорию `cd ..`
+* Cоздадим папку для **Nginx**
+```bash
+mkdir Nginx
+
+# переходим на папку Nginx
+cd Nginx/
+
+# Cоздадим файл конфигураций Nginx
+touch nginx.conf
+
+# Откроем файл с помощью Vim
+vim nginx.conf
+```
+ставим код ниже:
+```nginx
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+
+    types_hash_max_size 2048;
+
+    upstream django {
+        server django-backend:8000;  # Имя сервиса из docker-compose
+    }
+    listen 80;
+         server_name <укажем доменное имя>;
+    
+    location = /favicon.ico { 
+        access_log off; log_not_found off; 
+        }
+
+    location /static/ {
+        alias /home/admin/assistant/static/;
+    } # для быстрой доставки статика
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot; # понадобится для получения ssl сертификатов
+        autoindex on;
+        }
+
+    location / {
+        proxy_pass http://django; # указали из параметра upstream
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+}
+```
+выйдем из **Vim** сохранив изменения.
+
