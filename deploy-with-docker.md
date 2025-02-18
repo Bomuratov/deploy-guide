@@ -172,5 +172,59 @@ http {
 
 }
 ```
-выйдем из **Vim** сохранив изменения.
+выйдем из **Vim** сохранив изменения и вернемся корневую директорию `cd ..`
 
+* Создание `docker-compose.yml` и настройка
+ ```bash
+# Создаем docker-compose.yml
+touch docker-compose.yml
+
+# Откроем с помощью Vim
+vim docker-compose.yml
+ ```
+ставим код ниже
+```py
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./data/certbot/www:/var/www/certbot
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - django
+    networks:
+      - backend
+
+  django:
+    build:
+      context: ./project-aurora/backend
+      dockerfile: Dockerfile
+    container_name: django-backend
+    restart: unless-stopped
+    volumes:
+      - ./project-aurora/backend:/app
+    expose:
+      - "8000"
+    environment:
+      - DEBUG=1
+      - DB_HOST=<эндпоинт базы данных>
+      - DB_PORT=5432
+      - DB_NAME=<имя базы данны>
+      - DB_USER=<user для базы данных>
+      - DB_PASSWORD=<пароль для базы данных>
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+```
+выйдем из редактора **Vim**.
