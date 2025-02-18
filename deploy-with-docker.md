@@ -228,3 +228,4 @@ networks:
     driver: bridge
 ```
 выйдем из редактора **Vim**.
+
