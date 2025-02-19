@@ -176,10 +176,9 @@ http {
 выйдем из **Vim** сохранив изменения и вернемся корневую директорию `cd ..`
 
 * Создание `docker-compose.yml` и настройка
- ```bash
+ ```py
 # Создаем docker-compose.yml
 touch docker-compose.yml
-
 # Откроем с помощью Vim
 vim docker-compose.yml
  ```
