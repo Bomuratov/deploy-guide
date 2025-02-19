@@ -1,0 +1,5 @@
+site_name: "Deploy Guide"
+theme:
+  name: "material"
+nav:
+  - Главная: deploy-with-docker.md
