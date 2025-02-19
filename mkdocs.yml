@@ -1,13 +1,10 @@
 site_name: "Deploy Guide"
+site_url: https://bomuratov.github.io/deploy-guide/
+use_directory_urls: false
 theme:
   name: "material"
-  # palette:
-  #   - media: "(prefers-color-scheme: dark)"  
-  #     scheme: slate
-  #     primary: black
-  #     accent: black
+  
   palette:
-
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
       toggle:
@@ -33,6 +30,6 @@ theme:
         name: Switch to system preference
       
 nav:
-  - Главная: deploy-with-docker.md
+  - Главная: index.md
 
 
