@@ -1,5 +1,38 @@
 site_name: "Deploy Guide"
 theme:
   name: "material"
+  # palette:
+  #   - media: "(prefers-color-scheme: dark)"  
+  #     scheme: slate
+  #     primary: black
+  #     accent: black
+  palette:
+
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/lightbulb-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      primary: teal
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: black
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
+      
 nav:
   - Главная: deploy-with-docker.md
+
+
