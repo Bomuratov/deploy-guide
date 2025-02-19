@@ -189,38 +189,37 @@ version: '3.8'
 
 services:
   nginx:
-    image: nginx:alpine
-    container_name: nginx
-    restart: unless-stopped
+    image: nginx:alpine    # Образ Nginx
+    container_name: nginx  # Имя контейнера
+    restart: unless-stopped  # Параметр автозапуска (запустит когда перезагружается сервер)
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:80"  # переброска порта для http
+      - "443:443"  # переброска порта для https
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./data/certbot/www:/var/www/certbot
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Создаем файл конфигурации в контейнере
+
     depends_on:
-      - django
+      - django   # Не запускает контейнер пока не запушен контейнер "djnago"
     networks:
-      - backend
+      - backend 
 
   django:
     build:
-      context: ./project-aurora/backend
-      dockerfile: Dockerfile
-    container_name: django-backend
-    restart: unless-stopped
+      context: ./dajngo-backend   # Конеткс то есть путь к Докерфайлу
+      dockerfile: Dockerfile    # Докерфайл
+    container_name: django-backend   # Имя контейнера
+    restart: unless-stopped    # Параметр автозапуска (запустит когда перезагружается сервер)
     volumes:
-      - ./project-aurora/backend:/app
+      - ./django-backend:/app # Создаем директорию с кодом в контейнере
     expose:
-      - "8000"
-    environment:
-      - DEBUG=1
-      - DB_HOST=<эндпоинт базы данных>
-      - DB_PORT=5432
-      - DB_NAME=<имя базы данны>
-      - DB_USER=<user для базы данных>
-      - DB_PASSWORD=<пароль для базы данных>
+      - "8000"   # переброска порта
+    environment:  # создаем .env файл внутри контейнера
+      - DEBUG=1  
+      - DB_HOST=<эндпоинт базы данных>  # укажем эндпоинт базы данных
+      - DB_PORT=5432    # укажем порт по умолчанию 5432
+      - DB_NAME=<имя базы данны>  # укажем имя Базы данных 
+      - DB_USER=<user для базы данных> # укажем имя юзера для баз данных
+      - DB_PASSWORD=<пароль для базы данных> # укажем  пароль к юзеру
     networks:
       - backend
 
@@ -228,5 +227,6 @@ networks:
   backend:
     driver: bridge
 ```
-выйдем из редактора **Vim**.
+выйдем из редактора **Vim** сохранив изменения.
+
 
